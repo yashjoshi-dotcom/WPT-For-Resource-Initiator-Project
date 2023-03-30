@@ -1,0 +1,32 @@
+<!doctype html>
+<head>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+</head>
+<body>
+     <!--Fetched from https://github.com/web-platform-tests/wpt/blob/master/media/counting.mp4 -->
+      <video id="video" src="./support/counting.mp4"></video>
+    <script>
+        var video = document.getElementById("video");
+
+        async_test((t) => {
+         video.addEventListener("load", t.step_func_done(() => {
+            var resources = performance.getEntriesByType("resource");
+
+  // Get the fetchID of the third entry
+  var fetchID = resources[2].fetchID; 
+   // Initialize a variable to store the result
+  var result = true; 
+  for (var i = 3; i < resources.length; i++) {
+    // Loop through the remaining entries
+    if (resources[i].fetchID !== fetchID) {
+      // If any entry has a different fetchID, set result to false and break
+      result = false;
+      break;
+    }
+     }
+     assert_true(result);
+    
+        }) )}, "Ensure that multiple range of request to a single source has same fetchID");
+    </script>
+</body>

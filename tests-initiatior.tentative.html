@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <script src="/resources/testharness.js"></script>
+    <script src="/resources/testharnessreport.js"></script>
+    <!-- Script for Loading various other resources -->
+    <script src="./support/sample-Script.js"></script>
+</head>
+<script>
+    test(() => {
+        const resources = performance.getEntriesByType("resource");
+        let initiatorIsNotNull = false;
+        //The first Two entries are for the Testharnessjs files .
+        const initiator_of_testharness = resources[0].initiator;
+        const initiator_of_testharnessreport = resources[1].initiator;
+        //Their initiator attribute should be an empty sting.
+        if (initiator_of_testharness != "" || initiator_of_testharnessreport != "") initiatorIsNotNull = true;
+        assert_false(initiatorIsNotNull);
+    }, "Ensure initiator Attribute matches with the fetch ID of parent script");
+    test(() => {
+        const resources = performance.getEntriesByType("resource");
+        //The first Two entries are for the Testharnessjs files .
+        const fetchID_of_parent_script = resources[2].fetchID;
+        const initiator_fetchID_of_indirecty_loaded_script = resources[3].initiator;
+        assert_equals(fetchID_of_parent_script, initiator_fetchID_of_indirecty_loaded_script);
+    }, "Ensure initiator Attribute matches with the fetch ID of parent script");
+
+    test(() => {
+        const resources = performance.getEntriesByType("resource");
+        //The first Two entries are for the Testharnessjs files .
+        const fetchID_of_parent_script_for_stylesheet = resources[3].fetchID;
+        const initiator_fetchID_of_indirecty_loaded_stylesheet = resources[4].initiator;
+        assert_equals(fetchID_of_parent_script, initiator_fetchID_of_indirecty_loaded_script);
+    }, "Ensure initiator Attribute of stylesheet matches with the fetch ID of parent script");
+</script>

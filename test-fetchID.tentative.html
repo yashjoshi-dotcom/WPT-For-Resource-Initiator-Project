@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <script src="/resources/testharness.js"></script>
+    <script src="/resources/testharnessreport.js"></script>
+    <!-- Script for Loading various other resources -->
+    <script src="./support/sample-Script.js"></script>
+    <!-- Loading Stylesheet using @import statement-->
+    <style>
+        @import url("./support/empty.css");
+    </style>
+</head>
+<body>
+  <!-- Fetched from https://github.com/web-platform-tests/wpt/blob/master/media/2048x1360-random.jpg -->
+    <img src="./support/2048x1360-random.jpg" />
+    <script>
+        // All fetch request are to different resources. Hence each
+        // entry should have a unique fetchID attribute.
+        test(() => {
+            // Get all the Resource Timing Objects
+            let resources = performance.getEntriesByType("resource");
+            // Create a set to store the fetch ID values
+            let fetchIdSet = new Set();
+            // Flag to set if fetchID is not String
+            let isfetchIDinvalid = false;
+            // Flag to set if its not unique.
+            let fetchIDrepeated = false;
+            // Loop through the RT entries and check their fetch ID attribute
+            for (let resource of resources) {
+                // Check that fetch ID attribute is a DOMString
+                if (typeof resource.fetchId !== "string") {
+                    isfetchIDinvalid = true;
+                    break;
+                }
+                // Check if fetchID is being repeated
+                if (fetchIdSet.has(resource.fetchId)) {
+                    fetchIDrepeated = true;
+                    break;
+                }
+                // Otherwise, add the fetch ID value to the set
+                fetchIdSet.add(resource.fetchId);
+            }
+            // If no duplicate fetch ID values are found
+            assert_false(isfetchIDinvalid);
+            assert_false(fetchIDrepeated);
+        }, "Ensure that the fetch ID attribute is unique for all the Resource Timing Objects");
+    </script>
+</body>
