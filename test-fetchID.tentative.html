@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-  <!-- Fetched from https://github.com/web-platform-tests/wpt/blob/master/media/2048x1360-random.jpg -->
+  <!-- Can be Fetched from https://github.com/web-platform-tests/wpt/blob/master/media/2048x1360-random.jpg -->
     <img src="./support/2048x1360-random.jpg" />
     <script>
         // All fetch request are to different resources. Hence each
@@ -39,9 +39,8 @@
                 // Otherwise, add the fetch ID value to the set
                 fetchIdSet.add(resource.fetchId);
             }
-            // If no duplicate fetch ID values are found
             assert_false(isfetchIDinvalid);
             assert_false(fetchIDrepeated);
-        }, "Ensure that the fetch ID attribute is unique for all the Resource Timing Objects");
+        }, "Ensure that the fetch ID attribute is unique for all the Resource Timing Objects & all are of string type");
     </script>
 </body>
